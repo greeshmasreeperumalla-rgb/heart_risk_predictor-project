@@ -1,0 +1,45 @@
+{
+  "best_model": "Logistic Regression",
+  "features": [
+    "age",
+    "sex",
+    "cp",
+    "trestbps",
+    "chol",
+    "fbs",
+    "restecg",
+    "thalach",
+    "exang",
+    "oldpeak",
+    "slope",
+    "ca",
+    "thal"
+  ],
+  "results": {
+    "Random Forest": {
+      "accuracy": 0.7705,
+      "precision": 0.7879,
+      "recall": 0.7879,
+      "f1_score": 0.7879,
+      "auc": 0.8604,
+      "cv": 0.8258
+    },
+    "Gradient Boosting": {
+      "accuracy": 0.7213,
+      "precision": 0.7353,
+      "recall": 0.7576,
+      "f1_score": 0.7463,
+      "auc": 0.8258,
+      "cv": 0.7844
+    },
+    "Logistic Regression": {
+      "accuracy": 0.8033,
+      "precision": 0.8,
+      "recall": 0.8485,
+      "f1_score": 0.8235,
+      "auc": 0.8712,
+      "cv": 0.8216
+    }
+  },
+  "feature_importance": {}
+}

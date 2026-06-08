@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CardioCheck — Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Satoshi:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f7f3ee;
+  --surface: #ffffff;
+  --border: #e8e0d5;
+  --text: #1a1410;
+  --text2: #6b5e52;
+  --text3: #a8998c;
+  --red: #c0392b;
+  --red-light: #fdf0ee;
+  --green: #1a7a4a;
+  --green-light: #edf7f2;
+  --green-mid: #b8e4cc;
+}
+
+body {
+  font-family: 'Satoshi', sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(circle at 15% 50%, rgba(192,57,43,0.07) 0%, transparent 50%),
+    radial-gradient(circle at 85% 30%, rgba(212,98,42,0.05) 0%, transparent 50%),
+    radial-gradient(circle at 50% 90%, rgba(26,122,74,0.04) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.card {
+  position: relative;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 28px;
+  width: 100%;
+  max-width: 440px;
+  padding: 44px 40px;
+  box-shadow: 0 8px 48px rgba(26,20,16,0.1), 0 2px 8px rgba(26,20,16,0.06);
+  animation: fadeIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+@keyframes fadeIn {
+  from { opacity:0; transform:translateY(24px) scale(0.97); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+
+/* Logo */
+.logo { display:flex; align-items:center; gap:14px; margin-bottom:36px; }
+.logo-icon {
+  width:52px; height:52px; background:var(--red);
+  border-radius:16px; display:flex; align-items:center; justify-content:center;
+  box-shadow: 0 4px 20px rgba(192,57,43,0.35);
+  animation: pulse 2.5s ease-in-out infinite;
+}
+.logo-icon svg { width:26px; height:26px; fill:white; }
+@keyframes pulse {
+  0%,100% { box-shadow:0 4px 20px rgba(192,57,43,0.35); }
+  50% { box-shadow:0 4px 32px rgba(192,57,43,0.55); }
+}
+.logo-text h1 {
+  font-family:'Clash Display',sans-serif;
+  font-size:24px; font-weight:700; line-height:1;
+}
+.logo-text p { font-size:12px; color:var(--text3); margin-top:3px; }
+
+/* Tabs */
+.tabs {
+  display:flex; gap:4px; background:#f5f0eb;
+  border-radius:14px; padding:4px; margin-bottom:32px;
+}
+.tab {
+  flex:1; padding:10px; text-align:center;
+  border-radius:11px; font-size:14px; font-weight:600;
+  cursor:pointer; transition:all 0.2s; color:var(--text3);
+  border:none; background:transparent;
+}
+.tab.active {
+  background:white; color:var(--text);
+  box-shadow:0 2px 8px rgba(26,20,16,0.1);
+}
+
+/* Forms */
+.form { display:none; }
+.form.active { display:block; animation:fadeForm 0.3s ease; }
+@keyframes fadeForm { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+.form-title { font-family:'Clash Display',sans-serif; font-size:22px; font-weight:700; margin-bottom:6px; }
+.form-sub { font-size:13px; color:var(--text2); margin-bottom:28px; }
+
+.field { margin-bottom:18px; }
+.field label { display:block; font-size:13px; font-weight:600; color:var(--text2); margin-bottom:7px; }
+
+.input-wrap { position:relative; }
+.input-wrap .icon {
+  position:absolute; left:14px; top:50%; transform:translateY(-50%);
+  font-size:16px; pointer-events:none;
+}
+.input-wrap input {
+  width:100%; padding:13px 14px 13px 42px;
+  border:1.5px solid var(--border); border-radius:14px;
+  font-family:'Satoshi',sans-serif; font-size:15px;
+  color:var(--text); background:var(--bg);
+  outline:none; transition:all 0.2s;
+}
+.input-wrap input:focus {
+  border-color:var(--red);
+  background:white;
+  box-shadow:0 0 0 3px rgba(192,57,43,0.1);
+}
+.input-wrap input::placeholder { color:var(--text3); }
+
+/* Password toggle */
+.pwd-toggle {
+  position:absolute; right:14px; top:50%; transform:translateY(-50%);
+  background:none; border:none; cursor:pointer; font-size:16px; color:var(--text3);
+  padding:0;
+}
+
+/* Submit button */
+.submit-btn {
+  width:100%; padding:15px;
+  background:var(--red); color:white; border:none;
+  border-radius:14px; font-family:'Clash Display',sans-serif;
+  font-size:16px; font-weight:600; cursor:pointer;
+  box-shadow:0 4px 20px rgba(192,57,43,0.35);
+  transition:all 0.2s; margin-top:8px;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.submit-btn:hover { background:#a93226; transform:translateY(-1px); box-shadow:0 6px 28px rgba(192,57,43,0.45); }
+.submit-btn:active { transform:translateY(0); }
+.submit-btn:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
+
+/* Message */
+.msg {
+  padding:12px 16px; border-radius:12px;
+  font-size:13px; font-weight:500; margin-bottom:16px; display:none;
+}
+.msg.error { background:var(--red-light); color:var(--red); border:1px solid #f5c6c0; display:block; }
+.msg.success { background:var(--green-light); color:var(--green); border:1px solid var(--green-mid); display:block; }
+
+/* Divider */
+.divider { display:flex; align-items:center; gap:12px; margin:20px 0; color:var(--text3); font-size:12px; }
+.divider::before, .divider::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* Footer note */
+.footer-note { text-align:center; font-size:12px; color:var(--text3); margin-top:24px; line-height:1.5; }
+
+/* Loading spinner */
+.spinner {
+  width:18px; height:18px; border:2.5px solid rgba(255,255,255,0.4);
+  border-top-color:white; border-radius:50%;
+  animation:spin 0.7s linear infinite; display:none;
+}
+@keyframes spin { to{transform:rotate(360deg)} }
+
+/* Strength bar */
+.strength-bar { display:none; margin-top:8px; }
+.strength-track { height:4px; background:var(--border); border-radius:99px; overflow:hidden; }
+.strength-fill { height:100%; border-radius:99px; transition:width 0.3s, background 0.3s; width:0%; }
+.strength-label { font-size:11px; margin-top:4px; font-weight:600; }
+</style>
+</head>
+<body>
+
+<div class="card">
+
+  <!-- Logo -->
+  <div class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg>
+    </div>
+    <div class="logo-text">
+      <h1>CardioCheck</h1>
+      <p>Heart Health Risk Assessment</p>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('login')">Sign In</button>
+    <button class="tab" onclick="switchTab('signup')">Create Account</button>
+  </div>
+
+  <!-- LOGIN FORM -->
+  <div class="form active" id="loginForm">
+    <div class="form-title">Welcome back 👋</div>
+    <div class="form-sub">Sign in to access your heart health dashboard</div>
+
+    <div class="msg" id="loginMsg"></div>
+
+    <div class="field">
+      <label>Email Address</label>
+      <div class="input-wrap">
+        <span class="icon">📧</span>
+        <input type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Password</label>
+      <div class="input-wrap">
+        <span class="icon">🔒</span>
+        <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="current-password">
+        <button class="pwd-toggle" onclick="togglePwd('loginPassword', this)">👁</button>
+      </div>
+    </div>
+
+    <button class="submit-btn" id="loginBtn" onclick="doLogin()">
+      <div class="spinner" id="loginSpinner"></div>
+      <span id="loginBtnText">Sign In →</span>
+    </button>
+
+    <div class="divider">or</div>
+    <div style="text-align:center; font-size:13px; color:var(--text2);">
+      Don't have an account?
+      <span style="color:var(--red);font-weight:600;cursor:pointer;" onclick="switchTab('signup')">Create one free</span>
+    </div>
+  </div>
+
+  <!-- SIGNUP FORM -->
+  <div class="form" id="signupForm">
+    <div class="form-title">Create your account 🫀</div>
+    <div class="form-sub">Start monitoring your heart health today — free forever</div>
+
+    <div class="msg" id="signupMsg"></div>
+
+    <div class="field">
+      <label>Full Name</label>
+      <div class="input-wrap">
+        <span class="icon">👤</span>
+        <input type="text" id="signupName" placeholder="Your full name" autocomplete="name">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Email Address</label>
+      <div class="input-wrap">
+        <span class="icon">📧</span>
+        <input type="email" id="signupEmail" placeholder="you@example.com" autocomplete="email">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Password</label>
+      <div class="input-wrap">
+        <span class="icon">🔒</span>
+        <input type="password" id="signupPassword" placeholder="At least 6 characters"
+          autocomplete="new-password" oninput="checkStrength(this.value)">
+        <button class="pwd-toggle" onclick="togglePwd('signupPassword', this)">👁</button>
+      </div>
+      <div class="strength-bar" id="strengthBar">
+        <div class="strength-track"><div class="strength-fill" id="strengthFill"></div></div>
+        <div class="strength-label" id="strengthLabel"></div>
+      </div>
+    </div>
+
+    <button class="submit-btn" id="signupBtn" onclick="doSignup()">
+      <div class="spinner" id="signupSpinner"></div>
+      <span id="signupBtnText">Create Account →</span>
+    </button>
+
+    <div class="divider">or</div>
+    <div style="text-align:center; font-size:13px; color:var(--text2);">
+      Already have an account?
+      <span style="color:var(--red);font-weight:600;cursor:pointer;" onclick="switchTab('login')">Sign in</span>
+    </div>
+  </div>
+
+  <div class="footer-note">🔒 Your data is stored locally & never shared with third parties</div>
+</div>
+
+<script>
+// ── Tab switching ──
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t,i) => {
+    t.classList.toggle('active', (tab==='login' && i===0)||(tab==='signup' && i===1));
+  });
+  document.getElementById('loginForm').classList.toggle('active', tab==='login');
+  document.getElementById('signupForm').classList.toggle('active', tab==='signup');
+  clearMsgs();
+}
+
+function clearMsgs() {
+  ['loginMsg','signupMsg'].forEach(id => {
+    const el = document.getElementById(id);
+    el.className = 'msg'; el.textContent = '';
+  });
+}
+
+// ── Password visibility ──
+function togglePwd(inputId, btn) {
+  const input = document.getElementById(inputId);
+  const isText = input.type === 'text';
+  input.type = isText ? 'password' : 'text';
+  btn.textContent = isText ? '👁' : '🙈';
+}
+
+// ── Password strength ──
+function checkStrength(pwd) {
+  const bar   = document.getElementById('strengthBar');
+  const fill  = document.getElementById('strengthFill');
+  const label = document.getElementById('strengthLabel');
+
+  if (!pwd) { bar.style.display='none'; return; }
+  bar.style.display = 'block';
+
+  let score = 0;
+  if (pwd.length >= 6)  score++;
+  if (pwd.length >= 10) score++;
+  if (/[A-Z]/.test(pwd)) score++;
+  if (/[0-9]/.test(pwd)) score++;
+  if (/[^A-Za-z0-9]/.test(pwd)) score++;
+
+  const levels = [
+    { w:'20%', c:'#ef4444', t:'Too weak'  },
+    { w:'40%', c:'#f97316', t:'Weak'      },
+    { w:'60%', c:'#f59e0b', t:'Fair'      },
+    { w:'80%', c:'#84cc16', t:'Good'      },
+    { w:'100%',c:'#22c55e', t:'Strong 💪' },
+  ];
+  const lvl = levels[Math.min(score, 4)];
+  fill.style.width = lvl.w;
+  fill.style.background = lvl.c;
+  label.style.color = lvl.c;
+  label.textContent = lvl.t;
+}
+
+// ── Loading state ──
+function setLoading(prefix, loading) {
+  document.getElementById(prefix+'Btn').disabled = loading;
+  document.getElementById(prefix+'Spinner').style.display = loading ? 'block' : 'none';
+  document.getElementById(prefix+'BtnText').style.display = loading ? 'none' : 'inline';
+}
+
+function showMsg(id, text, type) {
+  const el = document.getElementById(id);
+  el.textContent = text;
+  el.className = 'msg ' + type;
+}
+
+// ── Login ──
+async function doLogin() {
+  const email    = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+
+  if (!email || !password) { showMsg('loginMsg','Please fill in all fields','error'); return; }
+
+  setLoading('login', true);
+  try {
+    const res = await fetch('/auth/login', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      showMsg('loginMsg', `Welcome back, ${data.name}! Redirecting to dashboard...`, 'success');
+      setTimeout(() => window.location.href = '/dashboard', 900);
+    } else {
+      showMsg('loginMsg', data.error || 'Login failed', 'error');
+      setLoading('login', false);
+    }
+  } catch(e) {
+    showMsg('loginMsg', 'Connection error. Is the server running?', 'error');
+    setLoading('login', false);
+  }
+}
+
+// ── Signup ──
+async function doSignup() {
+  const name     = document.getElementById('signupName').value.trim();
+  const email    = document.getElementById('signupEmail').value.trim();
+  const password = document.getElementById('signupPassword').value;
+
+  if (!name || !email || !password) { showMsg('signupMsg','Please fill in all fields','error'); return; }
+  if (password.length < 6) { showMsg('signupMsg','Password must be at least 6 characters','error'); return; }
+
+  setLoading('signup', true);
+  try {
+    const res = await fetch('/auth/signup', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ name, email, password })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      showMsg('signupMsg', `Account created! Welcome, ${data.name}! Redirecting to dashboard...`, 'success');
+      setTimeout(() => window.location.href = '/dashboard', 900);
+    } else {
+      showMsg('signupMsg', data.error || 'Signup failed', 'error');
+      setLoading('signup', false);
+    }
+  } catch(e) {
+    showMsg('signupMsg', 'Connection error. Is the server running?', 'error');
+    setLoading('signup', false);
+  }
+}
+
+// ── Enter key support ──
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  const loginActive = document.getElementById('loginForm').classList.contains('active');
+  if (loginActive) doLogin(); else doSignup();
+});
+</script>
+</body>
+</html>

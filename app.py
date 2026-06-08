@@ -1,3 +1,5 @@
+
+
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
 import joblib, json, os, sqlite3
@@ -64,12 +66,12 @@ def login_required(f):
 def home():
     if 'user_id' not in session:
         return redirect(url_for('login_page'))
-    return redirect(url_for('dashboard'))
+    return redirect(url_for('index'))
 
 @app.route('/login')
 def login_page():
     if 'user_id' in session:
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('index'))
     return render_template('login.html')
 
 @app.route('/dashboard')
@@ -166,25 +168,34 @@ def predict():
 @login_required
 def me():
     user_id = session['user_id']
-    db    = get_db()
-    user  = db.execute('SELECT * FROM users WHERE id=?', (user_id,)).fetchone()
-    count = db.execute('SELECT COUNT(*) as c FROM predictions WHERE user_id=?', (user_id,)).fetchone()['c']
+    db = get_db()
+
+    user = db.execute(
+        'SELECT * FROM users WHERE id=?',
+        (user_id,)
+    ).fetchone()
+
+    count = db.execute(
+        'SELECT COUNT(*) as c FROM predictions WHERE user_id=?',
+        (user_id,)
+    ).fetchone()['c']
+
     db.close()
 
     response = jsonify({
-        'name':         user['name'],
-        'email':        user['email'],
+        'name': user['name'],
+        'email': user['email'],
         'total_checks': count,
-        'joined':       user['created_at'],
-        'created_at':   user['created_at'],
-        'user_id':      user_id,   # include so frontend can detect user switches
+        'joined': user['created_at'],
+        'created_at': user['created_at'],
+        'user_id': user_id
     })
-    # Prevent browser from caching — each user must get fresh data
-    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
-    response.headers['Pragma']        = 'no-cache'
-    response.headers['Expires']       = '0'
-    return response
 
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+
+    return response
 # ── History (extended with limit param) ──
 @app.route('/history')
 @login_required
